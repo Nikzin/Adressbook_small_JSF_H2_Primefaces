@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="templates/defaultTemplate.xhtml">
+        <ui:define name="content">
+            <h:form id="form">
+
+
+<p>Database: Adressbook NZ</p>
+
+
+                <p:growl id="msgs" showDetail="true"/>
+
+                <p:dataTable id="contacts" editable="true" var="contact" value="#{addressBookView.contacts}" widgetVar="contactTable"
+                             emptyMessage="Inga kontakter hittades" filteredValue="#{addressBookView.filteredContacts}">
+
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="Addressbook " />
+
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <f:facet name="footer">
+                        <p:outputPanel>
+                            <h:outputText value="Search in all rows " />
+                            <p:inputText id="globalFilter" onkeyup="PF('contactTable').filter()" style="width:200px"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:ajax event="rowEdit" listener="#{addressBookView.editRow}" update=":form:msgs" />
+                    <p:ajax event="rowEditCancel" listener="#{addressBookView.cancelEditRow}" update=":form:msgs" />
+
+                    <p:column width="30" filterBy="#{contact.id}" headerText="Id" filterMatchMode="contains" filterStyle="width: 20px;">
+                        <h:outputText value="#{contact.id}" />
+                    </p:column>
+
+                    <p:column filterBy="#{contact.firstName}" headerText="First Name" filterMatchMode="contains">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{contact.firstName}" /></f:facet>
+                            <f:facet name="input"><p:inputText id="firstNameInput" value="#{contact.firstName}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column filterBy="#{contact.lastName}" headerText="Last Name" filterMatchMode="contains">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{contact.lastName}" /></f:facet>
+                            <f:facet name="input"><p:inputText id="lastNameInput" value="#{contact.lastName}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column filterBy="#{contact.email}" headerText="E-mail" filterMatchMode="contains">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{contact.email}" /></f:facet>
+                            <f:facet name="input"><p:inputText id="emailInput" value="#{contact.email}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column filterBy="#{contact.phone}" headerText="Phone" filterMatchMode="contains">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{contact.phone}" /></f:facet>
+                            <f:facet name="input"><p:inputText id="phoneInput" value="#{contact.phone}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column filterBy="#{contact.address}" headerText="Address" filterMatchMode="contains">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{contact.address}" /></f:facet>
+                            <f:facet name="input"><p:inputText id="addressInput" value="#{contact.address}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column style="width:32px">
+                        <p:rowEditor />
+                    </p:column>
+
+                    <p:column style="width:50px">
+                        <p:commandLink action="#{addressBookView.delete(contact)}" update="contacts">Ta bort</p:commandLink>
+                    </p:column>
+
+                </p:dataTable>
+
+
+
+                <p>Adding:</p>
+
+                <h:panelGrid columns="2" id="addContact" cellpadding="5">
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="New contact " />
+
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <h:outputLabel for="firstName" value="First Name: "/>
+                    <p:inputText id="firstName" value="#{addContact.firstName}" label="First Name" required="true"/>
+
+                    <h:outputLabel for="lastName" value="Last Name: "/>
+                    <p:inputText id="lastName" value="#{addContact.lastName}" label="Last Name" required="true"/>
+
+                    <h:outputLabel for="email" value="E-Mail: "/>
+                    <p:inputText id="email" value="#{addContact.email}" label="E-mail" required="true"/>
+
+                    <h:outputLabel for="phone" value="Phone: "/>
+                    <p:inputText id="phone" value="#{addContact.phone}" label="Phone" required="true"/>
+
+                    <h:outputLabel for="address" value="Address: "/>
+                    <p:inputText id="address" value="#{addContact.address}" label="Address" required="true"/>
+
+                </h:panelGrid>
+                <p:commandButton update="addContact contacts" value="Add" action="#{addContact.addContact}" />
+                <br></br>
+
+
+
+            </h:form>
+
+
+        </ui:define>
+    </ui:composition>
+
+
+</html>
